@@ -1,0 +1,6 @@
+<h1>Settings</h1>
+<label for="key">API key:</label><small>*Note: the key is 2TINDEVOPS</small>
+<form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+    <input type="text" name="key" id="key" [(ngModel)]="key"/>
+    <button type="submit">Save</button>
+</form>

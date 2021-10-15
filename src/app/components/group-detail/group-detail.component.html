@@ -1,0 +1,4 @@
+<h2>{{group}}</h2>
+<ul>
+    <li *ngFor="let item of students$ | async">{{item.name}} ({{item.age}})</li>
+</ul>

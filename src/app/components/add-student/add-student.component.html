@@ -1,0 +1,12 @@
+<h1>Add student</h1>
+<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+    <input type="text" formControlName="name" name="name" placeholder="student name" />
+    <small *ngIf="addFormControls.name.errors?.required && addFormControls.name.touched">Name is required!</small>
+    <input type="text" formControlName="age" name="age" placeholder="student age" />
+    <small *ngIf="addFormControls.age.errors?.required && addFormControls.age.touched">Age is required!</small>
+    <small *ngIf="addFormControls.age.errors?.pattern && addFormControls.age.touched">Age must be a number!</small>
+    <input type="text" formControlName="group" name="group" placeholder="student group" />
+    <small *ngIf="addFormControls.group.errors?.required && addFormControls.group.touched">Group is required!</small>
+    <small *ngIf="(addFormControls.group.errors?.minlength || addFormControls.group.errors?.maxlength) && addFormControls.group.touched">Group must be between 3 and 12 characters!</small>
+    <button type="submit">Add student</button>
+</form>

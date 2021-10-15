@@ -1,0 +1,11 @@
+<h1>Groepen</h1>
+<table>
+    <tr>
+        <th>Groep</th>
+        <th>Details</th>
+    </tr>
+    <tr *ngFor="let item of groups$ | async">
+        <td>{{item}}</td>
+        <td><button (click)="clickDetails(item)">details</button></td>
+    </tr>
+</table>
