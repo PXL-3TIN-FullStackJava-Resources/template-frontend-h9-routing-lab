@@ -1,27 +1,129 @@
-# TemplateFrontendH9RoutingLab
+# H9 Routing
+In deze lab maken we gebruik van angular routing om gebruik te maken van verschillende views op basis van de route in de URL. De applicatie zelf bestaat uit enkele losse components, een service die http calls kan maken naar de Devops API van vorig schooljaar en een authservice die instaat voor het bijhouden van de API key.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.8.
+Gegeven is deze repo. Hierin staat een Angular project met reeds een confessions applicatie uit de vorige labs. **Navigeer naar deze folder via de CLI** en voer volgend commando uit: ```npm install```
+ 
+Vervolgens voer je, nog steeds in deze folder, het commando ```ng serve -o``` uit. Hiermee zal de applicatie gestart worden en gaat er automatisch een browser open. Moest dit laatste niet het geval zijn, surf je naar http://localhost:4200. Bij elke aanpassing in de code zal de browser automatisch refreshen.
 
-## Development server
+![alt_text](https://i.imgur.com/TT9FcyW.png "image_tooltip") Bekijk voor het starten van de lab de applicatie code. Leg hierbij de focus op de werking en het gebruik van de `student.service.ts` en de `auth.service.ts`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Routing module
+![alt_text](https://i.imgur.com/TT9FcyW.png "image_tooltip") Bekijk de `app-routing.module.ts` file en hoe deze gelinked is aan de `app.module.ts` file. De routing module wordt aangemaakt door Angular bij het aanmaken van een nieuw project via `ng new`.
 
-## Code scaffolding
+In deze file voorzien we routes die gebruikt worden in de applicatie. Pas de routes constante aan als volgt:
+```typescript
+const routes: Routes = [
+  {path: 'home', component: GroupListComponent},
+  {path: 'add', component: AddStudentComponent},
+  {path: 'settings', component: SettingsComponent},
+];
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```typescript
+  {path: '', redirectTo: 'home', pathMatch: 'full'}
+```
 
-## Build
+```typescript
+    {path: '**', redirectTo: 'home', pathMatch: 'full'}
+```
+# Router outlet & linken
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Vervolgens voorzien we een plaats in de `app.component.html` waardat de components getoond worden als er routes geactiveerd worden:
+```html
+<app-navbar></app-navbar>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+```
+Hierna voorzien we linken om deze routes te activeren. We gebruiken geen default html validatie maar maken gebruik van `routerlink` attributen. Pas de `navbar.component.html` aan als volgt:
+```html
+<ul>
+    <li><a [routerLink]="['/home']" routerLinkActive="active">Home</a></li>
+    <li><a [routerLink]="['/add']" routerLinkActive="active">Add student</a></li>
+    <li><a [routerLink]="['/settings']" routerLinkActive="active">Settings</a></li>
+</ul>
+```
 
-## Running unit tests
+Je kan vervolgens de applicatie al testen. Components worden getoond maar HTML requests lukken nog niet. Dit komt omdat de API key nog niet geset is. Ga naar de `settings` Pagina en geef de key `2TINDEVOPS`in.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Routeguards
+Gebruik de angular CLI om een routeguard te maken via volgend commando
+```
+ng generate shared/services/guard auth --implements canActivate
+```
 
-## Running end-to-end tests
+```typescript
+export class AuthGuard implements CanActivate {
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  constructor(private auth: AuthService, private router: Router){}
 
-## Further help
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if(this.auth.getKey != ''){
+      return true;
+    }
+    console.log("test");
+    this.router.navigate(['settings']);
+    return false;
+  }
+  
+}
+```
+De routeguard checkt of er een key ingevuld is, indien niet wordt er doorverwezen naar de settings component. Vervolgens linken we deze routeguard aan de routes in `app-routing.module.ts`:
+```typescript
+const routes: Routes = [
+  {path: 'home', component: GroupListComponent, canActivate: [AuthGuard]},
+  {path: 'add', component: AddStudentComponent, canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '**', redirectTo: 'home', pathMatch: 'full'}
+];
+```
+Gebruik de angular CLI om nog een routeguard te maken via volgend commando
+```
+ng generate shared/services/save auth --implements canDeactivate
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```typescript
+export class SaveGuard implements CanDeactivate<unknown> {
+  canDeactivate(
+    component: AddStudentComponent,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if(component.addForm.dirty && !component.isSubmitted){
+      return window.confirm("Unsaved changes, are you sure you want to leave?");
+    }
+    return true;
+  }
+  
+}
+```
+
+```typescript
+ {path: 'add', component: AddStudentComponent, canActivate: [AuthGuard], canDeactivate: [SaveGuard]},
+ ```
+
+# Parameters in routes
+
+```typescript
+ clickDetails(group: String){
+    this.router.navigate(['group',group]);
+  }
+```
+
+```typescript
+  {path: 'group/:group', component: GroupDetailComponent, canActivate: [AuthGuard]},
+```
+
+```typescript
+constructor(private activatedRoute: ActivatedRoute, private studentService: StudentService) { }
+```
+
+```typescript
+ngOnInit(): void {
+    this.group = this.activatedRoute.snapshot.params['group'];
+    this.students$ = this.studentService.getStudentsByGroup(this.group);
+  }
+```
