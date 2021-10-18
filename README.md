@@ -15,7 +15,7 @@ In de file `app-routing.module.ts` voorzien we routes die gebruikt worden in de 
 const routes: Routes = [
   {path: 'home', component: GroupListComponent},
   {path: 'add', component: AddStudentComponent},
-  {path: 'settings', component: SettingsComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 ```
 Daarnaast voorzien we ook nog een route die een redirect voorziet als er geen specfieke route opgegeven wordt:
