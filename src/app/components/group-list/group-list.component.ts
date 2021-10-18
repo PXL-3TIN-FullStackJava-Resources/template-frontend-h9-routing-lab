@@ -12,7 +12,7 @@ import { StudentService } from 'src/app/shared/services/student.service';
 export class GroupListComponent implements OnInit {
   groups$!: Observable<String[]>;
 
-  constructor(private studentService: StudentService, private router: Router) { 
+  constructor(private studentService: StudentService) { 
 
   }
 
@@ -21,7 +21,8 @@ export class GroupListComponent implements OnInit {
   }
 
   clickDetails(group: String){
-    this.router.navigate(['group',group]);
+    // TODO
+
   }
 
 }

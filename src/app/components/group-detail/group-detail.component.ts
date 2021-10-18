@@ -13,11 +13,10 @@ export class GroupDetailComponent implements OnInit {
   students$!: Observable<Student[]>;
   group!: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private studentService: StudentService) { }
+  constructor(private studentService: StudentService) { }
 
   ngOnInit(): void {
-    this.group = this.activatedRoute.snapshot.params['group'];
-    this.students$ = this.studentService.getStudentsByGroup(this.group);
+   
   }
 
 }

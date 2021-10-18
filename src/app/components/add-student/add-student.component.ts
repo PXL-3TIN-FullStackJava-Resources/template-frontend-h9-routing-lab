@@ -12,7 +12,7 @@ import { StudentService } from 'src/app/shared/services/student.service';
 export class AddStudentComponent implements OnInit {
   addForm!: FormGroup;
   isSubmitted: boolean = false;
-  constructor(private fb: FormBuilder, private studentService: StudentService, private router: Router) { }
+  constructor(private fb: FormBuilder, private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.isSubmitted = false;
@@ -30,8 +30,7 @@ export class AddStudentComponent implements OnInit {
   onSubmit(): void{
     let newStudent = new Student(this.addForm.value["name"], this.addForm.value["age"], this.addForm.value["group"]);
     this.studentService.addStudent(newStudent).subscribe(() => {
-      this.isSubmitted = true;  
-      this.router.navigate(['home']);
+      this.isSubmitted = true; 
     });
   }
 
