@@ -128,7 +128,15 @@ ngOnInit(): void {
   }
 ```
 
-Tenslotte voorzien we in de `group-list.component.ts` file nog volgende aanpassingen aan de `clickDetails` methode die navigeert naar de route en de parameter meegeeft:
+Tenslotte voorzien we in de `group-list.component.ts` file nog volgende aanpassingen:
+de constructor waarin we de router meegeven:
+```typescript
+constructor(private studentService: StudentService, private router: Router) { 
+
+}
+```
+
+de `clickDetails` methode die navigeert naar de route en de parameter meegeeft:
 ```typescript
  clickDetails(group: String){
     this.router.navigate(['group',group]);
