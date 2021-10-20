@@ -111,7 +111,7 @@ Vervolgens linken we deze routeguard aan de routes in `app-routing.module.ts`:
  Je kan één of meerdere routeguard koppelen aan één of meerdere routes.
 
 # Parameters in routes
-Bij het klikken op de detail knop in het overzicht willen we naar de detailpagina van die groep gaan. Hiervoor gaan we werken met parameters in de route. We starten met het toevoegen van onderstaande route in de file `app-routing.module.ts`:
+Bij het klikken op de detail knop in het overzicht willen we naar de detailpagina van die groep gaan. Hiervoor gaan we werken met parameters in de route. We starten met het toevoegen van onderstaande route in de file `app-routing.module.ts`. ** Let wel: Deze route voeg je toe boven de redirect en wildcard routes **:
 ```typescript
   {path: 'group/:group', component: GroupDetailComponent, canActivate: [AuthGuard]},
 ```
