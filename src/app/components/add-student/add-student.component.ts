@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Student } from 'src/app/shared/models/student.model';
 import { StudentService } from 'src/app/shared/services/student.service';
@@ -10,9 +10,9 @@ import { StudentService } from 'src/app/shared/services/student.service';
   styleUrls: ['./add-student.component.css']
 })
 export class AddStudentComponent implements OnInit {
-  addForm!: FormGroup;
+  addForm!: UntypedFormGroup;
   isSubmitted: boolean = false;
-  constructor(private fb: FormBuilder, private studentService: StudentService) { }
+  constructor(private fb: UntypedFormBuilder, private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.isSubmitted = false;
