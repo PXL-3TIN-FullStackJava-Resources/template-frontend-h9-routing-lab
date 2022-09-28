@@ -9,7 +9,7 @@ export class AuthService {
   private httpOptions: any;
 
   constructor() {
-    this.apikey = '2TINDEVOPS';
+    this.apikey = '';
     this.httpOptions = {
       headers: new HttpHeaders({
         'Key': this.apikey,

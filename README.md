@@ -15,7 +15,7 @@ In de file `app-routing.module.ts` voorzien we routes die gebruikt worden in de 
 const routes: Routes = [
   {path: 'home', component: GroupListComponent},
   {path: 'add', component: AddStudentComponent},
-  {path: 'settings', component: SettingsComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 ```
 Daarnaast voorzien we ook nog een route die een redirect voorziet als er geen specfieke route opgegeven wordt:
@@ -111,7 +111,7 @@ Vervolgens linken we deze routeguard aan de routes in `app-routing.module.ts`:
  Je kan één of meerdere routeguard koppelen aan één of meerdere routes.
 
 # Parameters in routes
-Bij het klikken op de detail knop in het overzicht willen we naar de detailpagina van die groep gaan. Hiervoor gaan we werken met parameters in de route. We starten met het toevoegen van onderstaande route in de file `app-routing.module.ts`:
+Bij het klikken op de detail knop in het overzicht willen we naar de detailpagina van die groep gaan. Hiervoor gaan we werken met parameters in de route. We starten met het toevoegen van onderstaande route in de file `app-routing.module.ts`. ** Let wel: Deze route voeg je toe boven de redirect en wildcard routes **:
 ```typescript
   {path: 'group/:group', component: GroupDetailComponent, canActivate: [AuthGuard]},
 ```
@@ -128,7 +128,15 @@ ngOnInit(): void {
   }
 ```
 
-Tenslotte voorzien we in de `group-list.component.ts` file nog volgende aanpassingen aan de `clickDetails` methode die navigeert naar de route en de parameter meegeeft:
+Tenslotte voorzien we in de `group-list.component.ts` file nog volgende aanpassingen:
+de constructor waarin we de router meegeven:
+```typescript
+constructor(private studentService: StudentService, private router: Router) { 
+
+}
+```
+
+de `clickDetails` methode die navigeert naar de route en de parameter meegeeft:
 ```typescript
  clickDetails(group: String){
     this.router.navigate(['group',group]);
